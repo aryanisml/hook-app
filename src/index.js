@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -29,7 +29,7 @@ function ExampleFetch() {
       .then(res => res.json())
       .then(setUserdata)
       .catch(err => console.log(err))
-  },[])
+  }, [])
 
   if (userData) {
     return <ul>{
@@ -40,10 +40,59 @@ function ExampleFetch() {
   }
 }
 
+function CheckBoxSample() {
+  const reducer = (checked) => !checked;
+  const [checked, toggle] = useReducer(
+    reducer,
+    false
+  )
+
+  return (
+    <>
+      <input type="checkbox"
+        value={checked}
+        onChange={toggle} />
+      {checked ? 'Checked' : 'Not Checked'}
+    </>)
+}
+
+const initalState = {
+  message: 'Hi'
+}
+const reducerFunc = (state, action) => {
+  switch (action.type) {
+    case 'Yell':
+      return {
+        message: 'Hey!'
+      }
+      break;
+    case 'Hello':
+      return {
+        message: 'Hello World'
+      }
+    default:
+      break;
+  }
+
+}
+
+function Message() {
+  const [state, dispatch] = useReducer(reducerFunc, initalState)
+  return (<>
+    <p>Message : {state.message}</p>
+    <button onClick={() => dispatch({ type: 'Yell' })}>Yell</button>
+    <button onClick={() => dispatch({ type: 'Hello' })}>Hello</button>
+  </>)
+
+}
+
+
 function App() {
   return (<>
     <StarRating />
-    <ExampleFetch />
+    {/* <ExampleFetch /> */}
+    <CheckBoxSample />
+    <Message />
   </>)
 
 }
