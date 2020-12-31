@@ -1,10 +1,21 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import SampleContext from  './SampleContext';
 import reportWebVitals from './reportWebVitals';
 import { FaStar } from 'react-icons/fa';
-
+import SampleForm from './useStateForm';
 const starRatingArray = length => [...Array(length)];
+
+
+const trees = [
+  {name : 'Apple', id : '232'},
+  {name : 'Apple1', id : '2322'},
+  {name : 'Apple3', id : '2324'},
+  {name : 'Apple4', id : '2325'},
+]
+
+
 
 function Star({ selected = false, onSelected }) {
   return <FaStar
@@ -86,6 +97,37 @@ function Message() {
 
 }
 
+function UseRefForm() {
+
+  const sound = useRef();
+  const color = useRef();
+
+  const Sumbit = (e) => {
+    e.preventDefault();
+    const soundVal = sound.current.value;
+    const colorVal = color.current.value;
+    alert(`${soundVal} similar to ${colorVal}`);
+    sound.current.value = "";
+    color.current.value = "";
+  }
+
+  return (
+
+    <>
+      <form onSubmit={Sumbit}>
+        <input type="text" placeholder="sounds...."
+          ref={sound} />
+        <input type="color"
+          ref={color} />
+        <button>Submit</button>
+      </form>
+    </>
+  );
+
+
+
+}
+
 
 function App() {
   return (<>
@@ -93,6 +135,11 @@ function App() {
     {/* <ExampleFetch /> */}
     <CheckBoxSample />
     <Message />
+    {/* <UseRefForm /> */}
+    <SampleContext.Provider value={{trees}}>
+    <SampleForm />
+    </SampleContext.Provider>
+    
   </>)
 
 }
